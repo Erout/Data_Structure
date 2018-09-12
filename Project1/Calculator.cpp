@@ -130,9 +130,23 @@ int stringToInt(string s){
 		return -total;
 }
 void Calculator::display(){
-	int temp1,temp2;
-	
+	single* temp = first_head;
+	while(temp != NULL){
+		cout<<temp->coe<<"x"<<temp->exp<<"+";
+		temp = temp->next;
+	}
+	cout<<endl;
+	temp = second_head;
+	while(temp != NULL){
+		cout<<temp->coe<<"x"<<temp->exp<<"+";
+		temp = temp->next;
+	}
 }
 bool Calculator::add(){
+	single* temp1 = first_head;
+	single* temp2 = second_head;
+	
+}
+void Calculator::sort(){
 
 }

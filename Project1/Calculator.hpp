@@ -27,6 +27,7 @@ public:
 	void display();
 	void derivative(int id);
 	void valueOfX(int x);
+	void sort();
 	friend int stringToInt(string s);
 
 private:
