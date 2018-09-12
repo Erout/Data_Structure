@@ -130,6 +130,7 @@ int stringToInt(string s){
 		return -total;
 }
 void Calculator::display(){
+	sort();
 	single* temp = first_head;
 	while(temp != NULL){
 		cout<<temp->coe<<"x"<<temp->exp<<"+";
@@ -219,8 +220,83 @@ bool Calculator::subtract(){
 	}
 }
 bool Calculator::multiple(){
-	
+	//系数相乘，指数相加 
+	int arr[100][2];
+	int count = 0;
+	single* p = first_head;
+	single* q = second_head;
+	while(p != NULL){
+		q = second_head;
+		while(q != NULL){
+			arr[count][0] = p->coefficient*q->coefficient;//coefficient
+			arr[count][1] = p->exponent+q->exponent;//exponent
+			q = q->next;
+		}
+		p = p->next;
+	}
+	//根据arr[i][1]进行排序和合并,再输出；
+}
+void Calculator::derivative(){
+	string s,total;
+	single* temp1 = first_head;
+	single* temp2 = second_head;
+	while(temp1 != NULL){
+		if(temp1->exponent){
+			sprintf(s,"%d%c%d",temp1->coefficient*temp1->exponent,'x',temp1->exponent-1);
+			temp1 = temp1->next;
+		}
+	}
+	while(temp2 != NULL){
+		if(temp2->exponent){
+			sprintf(s,"%d%c%d",temp2->coefficient*temp2->exponent,'x',temp2->exponent-1);
+			temp2 = temp2->next;
+		}
+	}
+}
+void Calculator::valueOfX(int x){
+	int result1 = 0;
+	single* temp1 = first_head;
+	while(temp1 != NULL){
+		result1 += temp1->coefficient*pow(x,temp1->exponent);
+		temp1 = temp1->next;
+	}
+	int result2 = 0;
+	single* temp2 = second_head;
+	while(temp2 != NULL){
+		result2 += temp2->coefficient*pow(x,temp2->exponent);
+	}
+	cout<<<<"result1"<<result1<<endl<<"result2"<<result2<<endl;
 }
 void Calculator::sort(){
-
+	single* p = first_head;
+	int tempcoe,tempexp;
+	for(int i = 0; i < first_num;i++){
+		p = first_head;
+		while(p->next != NULL){
+			if(p->exponent < p->next->exponent){
+				tempcoe = p->coefficient;
+				tempexp = p->exponent;
+				p->coefficient = p->next->coefficient;
+				p->exponent = p->next->exponent;
+				p->next->coefficient = tempcoe;
+				p->next->exponent = tempexp;
+			}
+			p = p->next;
+		}
+	}
+	single* q = second_head;
+	for(int i = 0; i < second_num; i++){
+		q = second_head;
+		while(q->next != NULL){
+			if(q->exponent < p->next->exponent){
+				tempcoe = q->coefficient;
+				tempexp = q->exponent;
+				q->coefficient = q->next->coefficient;
+				q->exponent = q->next->exponent;
+				q->next->coefficient = tempcoe;
+				q->next->exponent = tempexp;
+			}
+			q = q->next;
+		}
+	}
 }
