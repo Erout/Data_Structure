@@ -218,6 +218,9 @@ bool Calculator::subtract(){
 		}
 	}
 }
+bool Calculator::multiple(){
+	
+}
 void Calculator::sort(){
 
 }
