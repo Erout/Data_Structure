@@ -1,4 +1,5 @@
 #include<iostream>
+#include<cstdio>
 #include<cmath>
 using std::cout;
 using std::cin;
@@ -26,7 +27,7 @@ public:
 	bool subtract();
 	bool multiple();
 	void display();
-	void derivative(int id);
+	void derivative();
 	void valueOfX(int x);
 	void sort();
 	friend int stringToInt(string s);

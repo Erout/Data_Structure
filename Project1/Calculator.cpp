@@ -53,7 +53,7 @@ bool Calculator::addItem(string s, int id){
 	}
 	else{
 		coe = stringToInt(s.substr(0,xPosition));
-		exp = stringToInt(s.substr(xPosition+1,s.size()-xPosition-1))
+		exp = stringToInt(s.substr(xPosition+1,s.size()-xPosition-1));
 	}
 	if(id == 1)
 		addItemToFirst(coe,exp);
@@ -133,13 +133,13 @@ void Calculator::display(){
 	sort();
 	single* temp = first_head;
 	while(temp != NULL){
-		cout<<temp->coe<<"x"<<temp->exp<<"+";
+		cout<<temp->coefficient<<"x"<<temp->exponent<<"+";
 		temp = temp->next;
 	}
 	cout<<endl;
 	temp = second_head;
 	while(temp != NULL){
-		cout<<temp->coe<<"x"<<temp->exp<<"+";
+		cout<<temp->coefficient<<"x"<<temp->exponent<<"+";
 		temp = temp->next;
 	}
 }
@@ -148,33 +148,33 @@ bool Calculator::add(){
 	single* temp1 = first_head;
 	single* temp2 = second_head;
 	while((temp1 != NULL)&&(temp2 != NULL)){
-		if(temp1->exp == temp2->exp){
-			sprintf(s,"%d%c%d",temp1->coe+temp2->coe,'x',temp1->exp);
+		if(temp1->exponent == temp2->exponent){
+			sprintf(s,"%d%c%d",temp1->coefficient+temp2->coefficient,'x',temp1->exponent);
 			total += s;
 			temp1 = temp1->next;
 			temp2 = temp2->next;
 		}
-		else if(temp1->exp > temp2->exp){
-			sprintf(s,"%d%c%d",temp1->coe,'x',temp1->exp);
+		else if(temp1->exponent > temp2->exponent){
+			sprintf(s,"%d%c%d",temp1->coefficient,'x',temp1->exponent);
 			total += s;
 			temp1 = temp1->next;
 		}
 		else{
-			sprintf(s,"%d%c%d",temp2->coe,'x',temp2->exp);
+			sprintf(s,"%d%c%d",temp2->coefficient,'x',temp2->exponent);
 			total += s;
 			temp2 = temp2->next;
 		}
 	}
 	if(temp1 == NULL){
 		while(temp2 != NULL){
-			sprintf(s,"%d%c%d",temp2->coe,'x',temp2->exp);
+			sprintf(s,"%d%c%d",temp2->coefficient,'x',temp2->exponent);
 			total += s;
 			temp2 = temp2->next;
 		}
 	}
 	if(temp2 == NULL){
 		while(temp1 != NULL){
-			sprintf(s,"%d%c%d",temp1->coe,'x',temp1->exp);
+			sprintf(s,"%d%c%d",temp1->coefficient,'x',temp1->exponent);
 			total += s;
 			temp1 = temp1->next;
 		}
@@ -187,33 +187,33 @@ bool Calculator::subtract(){
 	single* temp2 = second_head;
 	string s,total;
 	while((temp1 != NULL)&&(temp2 != NULL)){
-		if(temp1->exp == temp2->exp){
-			sprintf(s,"%d%c%d",temp1->coe-temp2->coe,'x',temp1->exp);
+		if(temp1->exponent == temp2->exponent){
+			sprintf(s,"%d%c%d",temp1->coefficient-temp2->coefficient,'x',temp1->exponent);
 			total += s;
 			temp1 = temp1->next;
 			temp2 = temp2->next;
 		}
-		else if(temp1->exp < temp2->exp){
-			sprintf(s,"%d%c%d",-temp2->coe,'x',temp2->exp);
+		else if(temp1->exponent < temp2->exponent){
+			sprintf(s,"%d%c%d",-temp2->coefficient,'x',temp2->exponent);
 			total += s;
 			temp2 = temp2->next;
 		}
 		else{
-			sprintf(s,"%d%c%d",temp1->coe,'x',temp1->exp);
+			sprintf(s,"%d%c%d",temp1->coefficient,'x',temp1->exponent);
 			total += s;
 			temp1 = temp1->next;
 		}
 	}
 	if(temp1 == NULL){
 		while(temp2 != NULL){
-			sprintf(s,"%d%c%d",-temp2->coe,'x',temp2->exp);
+			sprintf(s,"%d%c%d",-temp2->coefficient,'x',temp2->exponent);
 			total += s;
 			temp2 = temp2->next;
 		}
 	}
 	if(temp2 == NULL){
 		while(temp1 != NULL){
-			sprintf(s,"%d%c%d",temp1->coe,'x',temp1->exp);
+			sprintf(s,"%d%c%d",temp1->coefficient,'x',temp1->exponent);
 			total += s;
 			temp1 = temp1->next;
 		}
@@ -265,7 +265,7 @@ void Calculator::valueOfX(int x){
 	while(temp2 != NULL){
 		result2 += temp2->coefficient*pow(x,temp2->exponent);
 	}
-	cout<<<<"result1"<<result1<<endl<<"result2"<<result2<<endl;
+	cout<<"result1"<<result1<<endl<<"result2"<<result2<<endl;
 }
 void Calculator::sort(){
 	single* p = first_head;
