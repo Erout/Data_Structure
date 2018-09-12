@@ -143,9 +143,80 @@ void Calculator::display(){
 	}
 }
 bool Calculator::add(){
+	string s,total;
 	single* temp1 = first_head;
 	single* temp2 = second_head;
-	
+	while((temp1 != NULL)&&(temp2 != NULL)){
+		if(temp1->exp == temp2->exp){
+			sprintf(s,"%d%c%d",temp1->coe+temp2->coe,'x',temp1->exp);
+			total += s;
+			temp1 = temp1->next;
+			temp2 = temp2->next;
+		}
+		else if(temp1->exp > temp2->exp){
+			sprintf(s,"%d%c%d",temp1->coe,'x',temp1->exp);
+			total += s;
+			temp1 = temp1->next;
+		}
+		else{
+			sprintf(s,"%d%c%d",temp2->coe,'x',temp2->exp);
+			total += s;
+			temp2 = temp2->next;
+		}
+	}
+	if(temp1 == NULL){
+		while(temp2 != NULL){
+			sprintf(s,"%d%c%d",temp2->coe,'x',temp2->exp);
+			total += s;
+			temp2 = temp2->next;
+		}
+	}
+	if(temp2 == NULL){
+		while(temp1 != NULL){
+			sprintf(s,"%d%c%d",temp1->coe,'x',temp1->exp);
+			total += s;
+			temp1 = temp1->next;
+		}
+	}
+	cout<<total;
+	return true;
+}
+bool Calculator::subtract(){
+	single* temp1 = first_head;
+	single* temp2 = second_head;
+	string s,total;
+	while((temp1 != NULL)&&(temp2 != NULL)){
+		if(temp1->exp == temp2->exp){
+			sprintf(s,"%d%c%d",temp1->coe-temp2->coe,'x',temp1->exp);
+			total += s;
+			temp1 = temp1->next;
+			temp2 = temp2->next;
+		}
+		else if(temp1->exp < temp2->exp){
+			sprintf(s,"%d%c%d",-temp2->coe,'x',temp2->exp);
+			total += s;
+			temp2 = temp2->next;
+		}
+		else{
+			sprintf(s,"%d%c%d",temp1->coe,'x',temp1->exp);
+			total += s;
+			temp1 = temp1->next;
+		}
+	}
+	if(temp1 == NULL){
+		while(temp2 != NULL){
+			sprintf(s,"%d%c%d",-temp2->coe,'x',temp2->exp);
+			total += s;
+			temp2 = temp2->next;
+		}
+	}
+	if(temp2 == NULL){
+		while(temp1 != NULL){
+			sprintf(s,"%d%c%d",temp1->coe,'x',temp1->exp);
+			total += s;
+			temp1 = temp1->next;
+		}
+	}
 }
 void Calculator::sort(){
 
