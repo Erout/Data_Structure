@@ -15,8 +15,6 @@ int main(){
 		cin>>bus[i][1];
 		bus[i][0] = i;
 	}
-	//int pas;
-	//sort
 	QuickSort(bus,0,n-1);
 	if(Debug){
 		for(int i = 0; i < n; i++){

@@ -1,5 +1,5 @@
 #include"Calculator.hpp"
-#define Debug 1
+#define Debug 0
 Calculator* Calculator::instance_ = NULL;
 Calculator::Calculator(){
 	first_head = NULL;
@@ -12,19 +12,6 @@ Calculator::Calculator(){
 Calculator::~Calculator(){
 	clear();
 }
-Calculator* Calculator::getInstance(){
-	if(instance_ == NULL)
-		instance_ = new Calculator;
-	return instance_;
-}
-/*
-bool Calculator::deleteInstance(){
-	clear();
-	delete instance_;
-	instance_ = NULL;
-}
-*/
-
 int stringToInt(string s){
 	if(Debug){
 		cout<<"ToInt:"<<s<<"END"<<endl;
@@ -96,8 +83,11 @@ void Calculator::clearResult(){
 		delete temp;
 		temp = result_head;
 	}
+	result_num = 0;
+	result_head = NULL;
 }
 void Calculator::clear(){
+	clearResult();
 	single* temp = first_head;
 	while(temp != NULL){
 		first_head = first_head->next;
@@ -111,6 +101,7 @@ void Calculator::clear(){
 		temp = second_head;
 	}
 	first_num = second_num = 0;
+	first_head = second_head = NULL;
 }
 bool Calculator::Input(string s, int id){
 	s += ' ';
@@ -192,7 +183,7 @@ bool Calculator::addItem(string s, int id){
 	return true;
 }
 bool Calculator::addItemToThird(double coe,int exp){
-	if((coe == 0)&&(exp == 0))
+	if(coe == 0)
 		return false;
 	single* temp = result_head;
 	bool existence = 0;
@@ -206,6 +197,9 @@ bool Calculator::addItemToThird(double coe,int exp){
 			}
 			temp = temp->next;
 		}
+		if(temp->exponent == exp){
+			existence = 1;
+		}
 		if(existence == 1)
 			temp->coefficient += coe;
 		else
@@ -215,8 +209,8 @@ bool Calculator::addItemToThird(double coe,int exp){
 	return true;
 }
 bool Calculator::addItemToFirst(double coe,int exp){
-		single* temp = first_head;
-		bool existence = 0;
+	single* temp = first_head;
+	bool existence = 0;
 	if(first_head == NULL)
 		first_head  = new single(coe,exp);
 	else{
@@ -226,6 +220,9 @@ bool Calculator::addItemToFirst(double coe,int exp){
 				break;
 			}
 			temp = temp->next;
+		}
+		if(temp->exponent == exp){
+			existence = 1;
 		}
 		if(existence == 1){
 			temp->coefficient += coe;
@@ -237,8 +234,8 @@ bool Calculator::addItemToFirst(double coe,int exp){
 	return true;
 }
 bool Calculator::addItemToSecond(double coe,int exp){
-		single* temp = second_head;
-		bool existence = 0;
+	single* temp = second_head;
+	bool existence = 0;
 	if(second_head == NULL)
 		second_head = new single(coe,exp);
 	else{
@@ -248,6 +245,9 @@ bool Calculator::addItemToSecond(double coe,int exp){
 				break;
 			}
 			temp = temp->next;
+		}
+		if(temp->exponent == exp){
+			existence = 1;
 		}
 		if(existence == 1){
 			temp->coefficient += coe;
@@ -262,9 +262,12 @@ bool Calculator::addItemToSecond(double coe,int exp){
 void Calculator::display(){
 	//sort();
 	single* temp = first_head;
+	bool firstItemAppear = 0;
 	while(temp != NULL){
-		if(temp->exponent == 0)
+		if(temp->exponent == 0){
 			cout<<temp->coefficient;
+			firstItemAppear = 1;
+		}
 		else if(temp->exponent == 1){
 			if(temp->coefficient == 1)
 				cout<<"x";
@@ -272,24 +275,33 @@ void Calculator::display(){
 				cout<<"-x";
 			else
 				cout<<temp->coefficient<<"x";
+			firstItemAppear = 1;
 		}
 		else{
 			if(temp->coefficient == 1)
 				cout<<"x"<<"^"<<temp->exponent;
+
 			else if(temp->coefficient == -1)
 				cout<<"-x"<<"^"<<temp->exponent;
 			else
 				cout<<temp->coefficient<<"x"<<"^"<<temp->exponent;
+			firstItemAppear = 1;
 		}
 		if((temp->next != NULL)&&(temp->next->coefficient > 0))
 			cout<<"+";
 		temp = temp->next;
 	}
+	if(!firstItemAppear)
+		cout<<"0";
 	cout<<endl;
+
 	temp = second_head;
+	firstItemAppear = 0;
 	while(temp != NULL){
-		if(temp->exponent == 0)
+		if(temp->exponent == 0){
 			cout<<temp->coefficient;
+			firstItemAppear = 1;
+		}
 		else if(temp->exponent == 1){
 			if(temp->coefficient == 1)
 				cout<<"x";
@@ -297,6 +309,7 @@ void Calculator::display(){
 				cout<<"-x";
 			else
 				cout<<temp->coefficient<<"x";
+			firstItemAppear = 1;
 		}
 		else{
 			if(temp->coefficient == 1)
@@ -305,24 +318,32 @@ void Calculator::display(){
 				cout<<"-x"<<"^"<<temp->exponent;
 			else
 				cout<<temp->coefficient<<"x"<<"^"<<temp->exponent;
+			firstItemAppear = 1;
 		}
 		if((temp->next != NULL)&&(temp->next->coefficient > 0))
-			cout<<" +";
+			cout<<"+";
 		else
 			cout<<" ";
 		temp = temp->next;
 	}
+	if(!firstItemAppear)
+		cout<<"0";
 	cout<<endl;
 }
 void Calculator::showResult(){
 	single* temp = result_head;
+	bool firstItemAppear = 0;
 	while(temp != NULL){
 		if(temp->coefficient == 0){
+			if((temp->next != NULL)&&(temp->next->coefficient > 0)&&(firstItemAppear))
+				cout<<"+";
 			temp = temp->next;
 			continue;
 		}
-		if(temp->exponent == 0)
-			 cout<<temp->coefficient;
+		if(temp->exponent == 0){
+			cout<<temp->coefficient;
+			firstItemAppear = 1;
+		}
 		else if(temp->exponent == 1){
 			if(temp->coefficient == 1)
 				cout<<"x";
@@ -330,6 +351,7 @@ void Calculator::showResult(){
 				cout<<"-x";
 			else
 				cout<<temp->coefficient<<"x";
+			firstItemAppear = 1;
 		}
 		else{
 			if(temp->coefficient == 1)
@@ -338,11 +360,14 @@ void Calculator::showResult(){
 				cout<<"-x"<<"^"<<temp->exponent;
 			else
 				cout<<temp->coefficient<<"x"<<"^"<<temp->exponent;
+			firstItemAppear = 1;
 		}
 		if((temp->next != NULL)&&(temp->next->coefficient > 0))
 			cout<<"+";
 		temp = temp->next;
 	}
+	if(!firstItemAppear)
+		cout<<"0";
 	cout<<endl;
 }
 bool Calculator::add(){
@@ -358,40 +383,6 @@ bool Calculator::add(){
 		addItemToThird(temp2->coefficient,temp2->exponent);
 		temp2 = temp2->next;
 	}
-	/*while((temp1 != NULL)&&(temp2 != NULL)){
-		if(temp1->exponent == temp2->exponent){
-			sprintf(s,"%d%c%d",temp1->coefficient+temp2->coefficient,'x',temp1->exponent);
-			total += s;
-			temp1 = temp1->next;
-			temp2 = temp2->next;
-		}
-		else if(temp1->exponent > temp2->exponent){
-			sprintf(s,"%d%c%d",temp1->coefficient,'x',temp1->exponent);
-			total += s;
-			temp1 = temp1->next;
-		}
-		else{
-			sprintf(s,"%d%c%d",temp2->coefficient,'x',temp2->exponent);
-			total += s;
-			temp2 = temp2->next;
-		}
-	}
-	if(temp1 == NULL){
-		while(temp2 != NULL){
-			sprintf(s,"%d%c%d",temp2->coefficient,'x',temp2->exponent);
-			total += s;
-			temp2 = temp2->next;
-		}
-	}
-	if(temp2 == NULL){
-		while(temp1 != NULL){
-			sprintf(s,"%d%c%d",temp1->coefficient,'x',temp1->exponent);
-			total += s;
-			temp1 = temp1->next;
-		}
-	}
-	cout<<total;*/
-
 	return true;
 }
 bool Calculator::subtract(){
@@ -406,44 +397,9 @@ bool Calculator::subtract(){
 		addItemToThird(-temp2->coefficient,temp2->exponent);
 		temp2 = temp2->next;
 	}
-	/*string s,total;
-	while((temp1 != NULL)&&(temp2 != NULL)){
-		if(temp1->exponent == temp2->exponent){
-			sprintf(s,"%d%c%d",temp1->coefficient-temp2->coefficient,'x',temp1->exponent);
-			total += s;
-			temp1 = temp1->next;
-			temp2 = temp2->next;
-		}
-		else if(temp1->exponent < temp2->exponent){
-			sprintf(s,"%d%c%d",-temp2->coefficient,'x',temp2->exponent);
-			total += s;
-			temp2 = temp2->next;
-		}
-		else{
-			sprintf(s,"%d%c%d",temp1->coefficient,'x',temp1->exponent);
-			total += s;
-			temp1 = temp1->next;
-		}
-	}
-	if(temp1 == NULL){
-		while(temp2 != NULL){
-			sprintf(s,"%d%c%d",-temp2->coefficient,'x',temp2->exponent);
-			total += s;
-			temp2 = temp2->next;
-		}
-	}
-	if(temp2 == NULL){
-		while(temp1 != NULL){
-			sprintf(s,"%d%c%d",temp1->coefficient,'x',temp1->exponent);
-			total += s;
-			temp1 = temp1->next;
-		}
-	}*/
 }
 bool Calculator::multiple(){
 	//系数相乘，指数相加 
-	//int arr[100][2];
-	//int count = 0;
 	clearResult();
 	single* p = first_head;
 	single* q = second_head;
@@ -455,19 +411,8 @@ bool Calculator::multiple(){
 		} 
 		p = p->next;
 	}
-	/*while(p != NULL){
-		q = second_head;
-		while(q != NULL){
-			arr[count][0] = p->coefficient*q->coefficient;//coefficient
-			arr[count][1] = p->exponent+q->exponent;//exponent
-			q = q->next;
-		}
-		p = p->next;
-	}*/
-	//根据arr[i][1]进行排序和合并,再输出；
 }
 void Calculator::derivative(int id){
-	//string s,total;
 	clearResult();
 	single* temp1 = first_head;
 	single* temp2 = second_head;
@@ -483,63 +428,64 @@ void Calculator::derivative(int id){
 			temp2 = temp2->next;
 		}
 	}
-	/*while(temp1 != NULL){
-		if(temp1->exponent){
-			sprintf(s,"%d%c%d",temp1->coefficient*temp1->exponent,'x',temp1->exponent-1);
-			temp1 = temp1->next;
-		}
-	}
-	while(temp2 != NULL){
-		if(temp2->exponent){
-			sprintf(s,"%d%c%d",temp2->coefficient*temp2->exponent,'x',temp2->exponent-1);
-			temp2 = temp2->next;
-		}
-	}*/
 }
-void Calculator::valueOfX(int x){
-	int result1 = 0;
+void Calculator::valueOfX(double x){
+	double result1 = 0;
 	single* temp1 = first_head;
 	while(temp1 != NULL){
 		result1 += temp1->coefficient*pow(x,temp1->exponent);
 		temp1 = temp1->next;
 	}
-	int result2 = 0;
+	double result2 = 0;
 	single* temp2 = second_head;
 	while(temp2 != NULL){
 		result2 += temp2->coefficient*pow(x,temp2->exponent);
+		temp2 = temp2->next;
 	}
-	cout<<"result1"<<result1<<endl<<"result2"<<result2<<endl;
+	cout<<"result1: "<<result1<<endl<<"result2: "<<result2<<endl;
 }
 void Calculator::sort(){
 	single* p = first_head;
+	single *p1 = p;
 	int tempcoe,tempexp;
-	for(int i = 0; i < first_num;i++){
-		p = first_head;
-		while(p->next != NULL){
-			if(p->exponent < p->next->exponent){
+	for(p; p != NULL; p = p->next){
+		for(p1 = p; p1 != NULL; p1 = p1->next){
+			if(p->exponent < p1->exponent){
 				tempcoe = p->coefficient;
 				tempexp = p->exponent;
-				p->coefficient = p->next->coefficient;
-				p->exponent = p->next->exponent;
-				p->next->coefficient = tempcoe;
-				p->next->exponent = tempexp;
-			}
-			p = p->next;
+				p->coefficient = p1->coefficient;
+				p->exponent = p1->exponent;
+				p1->coefficient = tempcoe;
+				p1->exponent = tempexp;
+			} 			
 		}
 	}
 	single* q = second_head;
-	for(int i = 0; i < second_num; i++){
-		q = second_head;
-		while(q->next != NULL){
-			if(q->exponent < p->next->exponent){
+	single* q1 = q;
+	for(q; q != NULL; q = q->next){
+		for(q1 = q; q1 != NULL; q1 = q1->next){
+			if(q->exponent < q1->exponent){
 				tempcoe = q->coefficient;
 				tempexp = q->exponent;
-				q->coefficient = q->next->coefficient;
-				q->exponent = q->next->exponent;
-				q->next->coefficient = tempcoe;
-				q->next->exponent = tempexp;
+				q->coefficient = q1->coefficient;
+				q->exponent = q1->exponent;
+				q1->coefficient = tempcoe;
+				q1->exponent = tempexp;
 			}
-			q = q->next;
+		}
+	}
+	single* r = result_head;
+	single* r1 = r;
+	for(r; r != NULL; r = r->next){
+		for(r1 = r; r1 != NULL; r1 = r1->next){
+			if(r->exponent <r1->exponent){
+				tempcoe = r->coefficient;
+				tempexp = r->exponent;
+				r->coefficient = r1->coefficient;
+				r->exponent = r1->exponent;
+				r1->coefficient = tempcoe;
+				r1->exponent = tempexp;
+			}
 		}
 	}
 }

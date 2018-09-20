@@ -17,8 +17,6 @@ struct single{
 };
 class Calculator{
 public:
-	static Calculator* getInstance();
-	static bool deleteInstance();
 	Calculator();
 	~Calculator();
 	bool Input(string s,int id);
@@ -34,7 +32,7 @@ public:
 	void display();
 	void showResult();
 	void derivative(int id);
-	void valueOfX(int x);
+	void valueOfX(double x);
 	void sort();
 	friend int stringToInt(string s);
 	friend double stringToDouble(string s);
@@ -46,6 +44,4 @@ private:
 	int first_num;
 	int second_num;
 	int result_num;
-	static Calculator* instance_;
-
 };
