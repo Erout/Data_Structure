@@ -30,6 +30,9 @@ public:
 	bool subtract();
 	bool multiple();
 	void display();
+	string getResult();
+	string getFirstInput();
+	string getSecondInput();
 	void showResult();
 	void derivative(int id);
 	void valueOfX(double x);

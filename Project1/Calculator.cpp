@@ -1,6 +1,5 @@
 #include"Calculator.hpp"
 #define Debug 0
-Calculator* Calculator::instance_ = NULL;
 Calculator::Calculator(){
 	first_head = NULL;
 	second_head = NULL;
@@ -488,4 +487,193 @@ void Calculator::sort(){
 			}
 		}
 	}
+}
+string Calculator::getResult(){
+    single* temp = result_head;
+    char* c = new char[500];
+    string s;
+    bool firstItemAppear = 0;
+    while(temp != NULL){
+        if(temp->exponent == 0){
+            //cout<<temp->coefficient;
+            sprintf(c,"%.2lf",temp->coefficient);
+            s += c;
+            firstItemAppear = 1;
+        }
+        else if(temp->exponent == 1){
+            if(temp->coefficient == 1){
+                //cout<<"x";
+                sprintf(c,"%c",'x');
+                s += c;
+            }
+            else if(temp->coefficient == -1){
+                //cout<<"-x";
+                sprintf(c,"%c%c",'-','x');
+                s += c;
+            }
+            else{
+                //cout<<temp->coefficient<<"x";
+                sprintf(c,"%.2lf%c",temp->coefficient,'x');
+                s += c;
+            }
+            firstItemAppear = 1;
+        }
+        else{
+            if(temp->coefficient == 1){
+                //cout<<"x"<<"^"<<temp->exponent;
+                sprintf( c,"%c%c%d",'x','^',temp->exponent);
+                s += c;
+            }
+            else if(temp->coefficient == -1){
+                //cout<<"-x"<<"^"<<temp->exponent;
+                sprintf(c,"%c%c%c%d",'-','x','^',temp->exponent);
+                s += c;
+            }
+            else{
+                //cout<<temp->coefficient<<"x"<<"^"<<temp->exponent;
+                sprintf(c,"%.2lf%c%c%d",temp->coefficient,'x','^',temp->exponent);
+                s += c;
+            }
+            firstItemAppear = 1;
+        }
+        if((temp->next != NULL)&&(temp->next->coefficient > 0)){
+            sprintf(c,"%c",'+');
+            s += c;
+            //cout<<"+";
+        }
+        temp = temp->next;
+    }
+    if(!firstItemAppear){
+        sprintf(c,"%d",0);
+        s += c;
+        //cout<<"0";
+    }
+    return s;
+}
+string Calculator::getFirstInput(){
+	sort();
+	single* temp = first_head;
+	bool firstItemAppear = 0;
+	string s;
+	char* c = new char[500];
+	while(temp != NULL){
+		if(temp->exponent == 0){
+			//cout<<temp->coefficient;
+			sprintf(c,"%.2lf",temp->coefficient);
+			s += c;
+			firstItemAppear = 1;
+		}
+		else if(temp->exponent == 1){
+			if(temp->coefficient == 1){
+				sprintf(c,"%c",'x');
+				//cout<<"x";
+				s += c;
+			}
+			else if(temp->coefficient == -1){
+				sprintf(c,"%c%c",'-','x');
+				//cout<<"-x";
+				s += c;
+			}
+			else{
+				//cout<<temp->coefficient<<"x";
+				sprintf(c,"%.2lf%c",temp->coefficient,'x');
+				s += c;
+			}
+			firstItemAppear = 1;
+		}
+		else{
+			if(temp->coefficient == 1){
+				//cout<<"x"<<"^"<<temp->exponent;
+				sprintf(c,"%c%c%d",'x','^',temp->exponent);
+				s += c;
+			}
+
+			else if(temp->coefficient == -1){
+				sprintf(c,"%c%c%c%d",'-','x','^',temp->exponent);
+				//cout<<"-x"<<"^"<<temp->exponent;
+				s += c;
+			}
+			else{
+				//cout<<temp->coefficient<<"x"<<"^"<<temp->exponent;
+				sprintf(c,"%.2lf%c%c%d",temp->coefficient,'x','^',temp->exponent);
+				s += c;
+			}
+			firstItemAppear = 1;
+		}
+		if((temp->next != NULL)&&(temp->next->coefficient > 0)){
+			//cout<<"+";
+			s += '+';
+		}
+		temp = temp->next;
+	}
+	if(!firstItemAppear){
+		//cout<<"0";
+		s += '0'; 
+	}
+	//cout<<endl;
+	return s;
+}
+string Calculator::getSecondInput(){
+	sort();
+	single* temp = second_head;
+	bool firstItemAppear = 0;
+	string s;
+	char* c = new char[500];
+	while(temp != NULL){
+		if(temp->exponent == 0){
+			//cout<<temp->coefficient;
+			sprintf(c,"%.2lf",temp->coefficient);
+			s += c;
+			firstItemAppear = 1;
+		}
+		else if(temp->exponent == 1){
+			if(temp->coefficient == 1){
+				sprintf(c,"%c",'x');
+				//cout<<"x";
+				s += c;
+			}
+			else if(temp->coefficient == -1){
+				sprintf(c,"%c%c",'-','x');
+				//cout<<"-x";
+				s += c;
+			}
+			else{
+				//cout<<temp->coefficient<<"x";
+				sprintf(c,"%.2lf%c",temp->coefficient,'x');
+				s += c;
+			}
+			firstItemAppear = 1;
+		}
+		else{
+			if(temp->coefficient == 1){
+				//cout<<"x"<<"^"<<temp->exponent;
+				sprintf(c,"%c%c%d",'x','^',temp->exponent);
+				s += c;
+			}
+
+			else if(temp->coefficient == -1){
+				sprintf(c,"%c%c%c%d",'-','x','^',temp->exponent);
+				//cout<<"-x"<<"^"<<temp->exponent;
+				s += c;
+			}
+			else{
+				//cout<<temp->coefficient<<"x"<<"^"<<temp->exponent;
+				sprintf(c,"%.2lf%c%c%d",temp->coefficient,'x','^',temp->exponent);
+				s += c;
+			}
+			firstItemAppear = 1;
+		}
+		if((temp->next != NULL)&&(temp->next->coefficient > 0)){
+			//cout<<"+";
+			s += '+';
+		}
+		temp = temp->next;
+	}
+	if(!firstItemAppear){
+		//cout<<"0";
+		s += '0'; 
+	}
+	//cout<<endl;
+	return s;
+
 }

@@ -6,7 +6,7 @@ void welcome();
 void goodBye();
 int main(){
 	int act;
-	cin>>act;
+	
 }
 void welcome(){
 	cout<<"多项式计算器"<<endl;

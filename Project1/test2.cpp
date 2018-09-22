@@ -18,11 +18,11 @@ int main(){
 	ca.subtract();
 	cout<<"SUB"<<endl;
 	ca.sort();
-	ca.showResult();
+	cout<<ca.getResult();
 	ca.add();
 	cout<<"ADD"<<endl;
 	ca.sort();
-	ca.showResult();
+	cout<<ca.getResult();
 }
 /*
 (1)	 
