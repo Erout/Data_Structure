@@ -259,7 +259,7 @@ bool Calculator::addItemToSecond(double coe,int exp){
 }
 
 void Calculator::display(){
-	//sort();
+	sort();
 	single* temp = first_head;
 	bool firstItemAppear = 0;
 	while(temp != NULL){
@@ -330,6 +330,7 @@ void Calculator::display(){
 	cout<<endl;
 }
 void Calculator::showResult(){
+	sort();
 	single* temp = result_head;
 	bool firstItemAppear = 0;
 	while(temp != NULL){
@@ -428,20 +429,25 @@ void Calculator::derivative(int id){
 		}
 	}
 }
-void Calculator::valueOfX(double x){
-	double result1 = 0;
-	single* temp1 = first_head;
-	while(temp1 != NULL){
-		result1 += temp1->coefficient*pow(x,temp1->exponent);
-		temp1 = temp1->next;
+double Calculator::valueOfX(double x,int id){
+
+	double result = 0;
+	single* temp;
+	if(id == 1){
+		temp = first_head;
 	}
-	double result2 = 0;
-	single* temp2 = second_head;
-	while(temp2 != NULL){
-		result2 += temp2->coefficient*pow(x,temp2->exponent);
-		temp2 = temp2->next;
+	else if(id == 2){
+		temp = second_head;
 	}
-	cout<<"result1: "<<result1<<endl<<"result2: "<<result2<<endl;
+	else{
+		return 0;
+	}
+	while(temp != NULL){
+		result += temp->coefficient*pow(x,temp->exponent);
+		temp = temp->next;
+	}
+	return result;
+	//cout<<"result1: "<<result1<<endl<<"result2: "<<result2<<endl;
 }
 void Calculator::sort(){
 	single* p = first_head;

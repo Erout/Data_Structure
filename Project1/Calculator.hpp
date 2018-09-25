@@ -20,12 +20,6 @@ public:
 	Calculator();
 	~Calculator();
 	bool Input(string s,int id);
-	bool addItem(string s,int id);
-	bool addItemToFirst(double coe,int exp);
-	bool addItemToSecond(double coe,int exp);
-	bool addItemToThird(double coe,int exp);
-	void clearResult();
-	void clear();
 	bool add();
 	bool subtract();
 	bool multiple();
@@ -35,8 +29,7 @@ public:
 	string getSecondInput();
 	void showResult();
 	void derivative(int id);
-	void valueOfX(double x);
-	void sort();
+	double valueOfX(double x,int id);
 	friend int stringToInt(string s);
 	friend double stringToDouble(string s);
 
@@ -47,4 +40,11 @@ private:
 	int first_num;
 	int second_num;
 	int result_num;
+	bool addItem(string s,int id);
+	bool addItemToFirst(double coe,int exp);
+	bool addItemToSecond(double coe,int exp);
+	bool addItemToThird(double coe,int exp);
+	void clearResult();
+	void clear();
+	void sort();
 };
