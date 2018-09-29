@@ -37,14 +37,17 @@ int main(){
 				break;
 			case 3:
 				ca.add();
+				cout<<"相加结果为："<<endl;
 				ca.showResult();
 				break;
 			case 4:
 				ca.subtract();
+				cout<<"相减结果为："<<endl;
 				ca.showResult();
 				break;
 			case 5:
 				ca.multiple();
+				cout<<"相乘结果为："<<endl;
 				ca.showResult();
 				break;
 			case 6:

@@ -452,7 +452,8 @@ double Calculator::valueOfX(double x,int id){
 void Calculator::sort(){
 	single* p = first_head;
 	single *p1 = p;
-	int tempcoe,tempexp;
+	double tempcoe;
+	int tempexp;
 	for(p; p != NULL; p = p->next){
 		for(p1 = p; p1 != NULL; p1 = p1->next){
 			if(p->exponent < p1->exponent){
