@@ -3,18 +3,22 @@
 #include<cstring>
 #include<vector>;
 #define size 50
+#define infinite 100000
 using namespace std;
 struct  word
 {
 	word* next[size];
 	string ele;
+	int dis;
 	int n;
 	word(string s){
 		ele = s;
 		memset(next,0,sizeof(next));
 		n = 0;
+		dis = infinite;
 	}
 };
+//判断两个string是否只相差一个字母
 bool diffOneChar(string a, string b){
 	int diff = 0;
 	for(int i = 0; i < a.size(); i++){
@@ -25,6 +29,8 @@ bool diffOneChar(string a, string b){
 		return true;
 	return false;
 }
+//使用图，只相差一个字母的单词相互连通
+//用dijstra算法求最短路径
 int main(){
 	string beginWord, endWord;
 	cin>>beginWord>>endWord;
