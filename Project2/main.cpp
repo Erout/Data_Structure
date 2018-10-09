@@ -1,10 +1,8 @@
 #include<iostream>
 #include"StackCal.h"
-void welcome(){
-	cout<<"欢迎使用表达式计算器！"<<endl;
-	cout<<"这是简易命令行版本"<<endl;
-	cout<<"请输入操作：0->退出系统 1->进行计算"<<endl;
-}
+using std::cout;
+using std::cin;
+using std::endl;
 int main(){
 	StackCal sc;
 	string s;
@@ -15,7 +13,8 @@ int main(){
 		cin>>s;
 		sc.clear();
 		sc.Input(s);
-		sc.compute();
+		if(!sc.compute())
+			cout<<"invalid!"<<endl;
 		cout<<"请输入操作：0->退出系统 1->进行计算"<<endl;
 		cin>>act;
 	}

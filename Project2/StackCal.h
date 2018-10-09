@@ -11,7 +11,7 @@ public:
 	StackCal();
 	~StackCal();
 	void Input(string s);
-	void compute();
+	bool compute();
 	void eraseOne();
 	void clear();
 	friend int stringToInt(string s);
