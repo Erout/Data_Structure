@@ -42,8 +42,12 @@ bool smallerThan(char a,char b){
 		return true;
 	else if(a == ')')
 		return false;
-	else if(a == '(')
-		return true;
+	else if(a == '('){
+		if(b != '#')
+			return true;
+		else
+			return false;
+	}
 	else if((a == '*')||(a == '/')){
 		if((b == '(')||(b == '^'))
 			return true;
@@ -135,6 +139,9 @@ bool StackCal::compute(){
 			}
 			//pop一个负号，pop一个数，减减加加之后再push进去
 			if((metSign == 1)&&((expression[pos]=='-')||(expression[pos] == '+'))){
+				//判断一下栈是否空，空则说明表达式非法，无法计算
+				if(opNum.empty())
+                    return false;
 				opSign.pop();
 				tempTop = opNum.top();
 				opNum.pop();
@@ -165,8 +172,13 @@ bool StackCal::compute(){
 				pos++;
 			}
 			else{
+				//判断两次栈是否空，若空，说明输入非法，无法进行计算
+				if(opNum.empty())
+                    return false;
 				back = opNum.top();
 				opNum.pop();
+				if(opNum.empty())
+                    return false;
 				front = opNum.top();
 				opNum.pop();
 				//判断一下分母是否为0
