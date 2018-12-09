@@ -10,14 +10,13 @@ int main(){
 	G.BFS2(15);
 	G.RecursivePrintTree(15,0,G.getBFSTree());
 	*/
-	G.recursiveDFS(3);
-	G.printDFS();
-	G.RecursivePrintTree(3,0,G.getDFSTree());
+	G.RecursiveDFS(16);
 
-	G.nonRecursiveDFS2(3);
-	G.RecursivePrintTree(3,0,G.getDFSTree());
+	G.nonRecursiveDFS2(16);
+	//G.RecursivePrintTree(3,0,G.getDFSTree());
 
-	G.nonRecursiveDFS(3);
-	G.RecursivePrintTree(3,0,G.getDFSTree());
+	G.nonRecursiveDFS(16);
+	G.nonRecursiveDFS(14);
+	//G.RecursivePrintTree(3,0,G.getDFSTree());
 	
 }

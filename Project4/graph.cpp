@@ -1,5 +1,5 @@
 #include "graph.hpp"
-#define Debug 1
+#define Debug 0
 graph::graph(){
 	for(int i = 0; i < SIZE; i++){
 		city[i] = NULL;
@@ -39,6 +39,14 @@ void graph::clearFormerDFS(){
 		}
 	}
 }
+void graph::clearMark(){
+	for(int i = 0; i < SIZE; i++){
+		if(city[i] != NULL)
+			city[i]->mark = 0;
+		if(city_mul[i] != NULL)
+			city_mul[i]->mark = 0;
+	}
+}
 void graph::setUpGraph(){
 	//读城市号码对应的名称
 	ifstream fname("city_and_number.txt");
@@ -49,17 +57,12 @@ void graph::setUpGraph(){
 		fname>>tempName;
 		cityname[tempId] = tempName;
 	}
-	if(Debug){
-		for(int i = 1; i < 26; i++){
-			cout<<i<<" :"<<cityname[i]<<endl;
-		}
-	}
 	ifstream fin("city_connect.in");
 	int a,b;
 	while(!fin.eof()){
 		fin>>a;
 		fin>>b;
-		cout<<a<<" "<<b<<endl;
+		//cout<<a<<" "<<b<<endl;
 		//先建立邻接表
 		
 		AcityNode* tmpAdd;
@@ -100,7 +103,7 @@ void graph::setUpGraph(){
 			add = 0;
 			tmp = city_mul[a]->firstedge;
 			while(!add){
-				cout<<tmp->ivex<<" "<<tmp->ilink<<" "<<tmp->jvex<<" "<<tmp->jlink<<endl;
+				//cout<<tmp->ivex<<" "<<tmp->ilink<<" "<<tmp->jvex<<" "<<tmp->jlink<<endl;
 				if(tmp->ivex == a){
 					if(tmp->ilink != NULL){
 						tmp = tmp->ilink;
@@ -189,6 +192,7 @@ void graph::setUpGraph(){
 //邻接多重表广度优先搜索,树也使用邻接表存储
 void graph::BFS(int vertex){
 	clearFormerBFS();
+	clearMark();
 	queue<headnode*> Q;
 	Q.push(city_mul[vertex]);
 	headnode* serach;
@@ -196,7 +200,7 @@ void graph::BFS(int vertex){
 	while(!Q.empty()){
 		serach = Q.front();
 		Q.pop();
-		cout<<serach->id<<" "<<serach->name<<endl;
+		//cout<<serach->id<<" "<<serach->name<<endl;
 		serach->mark = 1;
 		tempEdge = serach->firstedge;
 		while(tempEdge != NULL){
@@ -224,20 +228,7 @@ void graph::BFS(int vertex){
 			BFSTree[i] = new Acity(i,cityname[i]);
 		}
 	}
-	cout<<"print BFS tree"<<endl;
-	for(int i = 1; i < 26; i++){
-		cout<<i<<cityname[i]<<"->";
-		AcityNode* checkedge;
-		if(BFSTree[i] != NULL){
-			checkedge = BFSTree[i]->firstNode;
-			while(checkedge != NULL){
-				cout<<checkedge->id<<checkedge->name<<"->";
-				checkedge = checkedge->next;
-			}				
-		}
-		cout<<endl;
-	}
-	//RecursivePrintTree(1,0,BFSTree);
+	RecursivePrintTree(vertex,0,BFSTree);
 }
 //树边，为有向边，存出边邻接表
 void graph::addEdgeToTree(int a, int b, Acity* array[]){
@@ -272,6 +263,7 @@ void graph::RecursivePrintTree(int pr, int offset,Acity* array[]){
 //邻接表广度优先搜索，树使用邻接表存储
 void graph::BFS2(int vertex){
 	clearFormerBFS();
+	clearMark();
 	queue<int> Q;
 	Q.push(vertex);
 	int serach;
@@ -295,9 +287,10 @@ void graph::BFS2(int vertex){
 			BFSTree[i] = new Acity(i,cityname[i]);
 		}
 	}
+	RecursivePrintTree(vertex,0,BFSTree);
 }
 //邻接表DFS
-void graph::recursiveDFS(int vertex){
+void graph::recursiveVisit(int vertex){
 	AcityNode* n;
 	if(city[vertex]->mark != 2){
 		city[vertex]->mark  = 2;
@@ -305,35 +298,25 @@ void graph::recursiveDFS(int vertex){
 		while(n != NULL){
 			if(city[n->id]->mark != 2){
 				addEdgeToTree(vertex,n->id,DFSTree);
-				recursiveDFS(n->id);
+				recursiveVisit(n->id);
 			}
 			n = n->next;
 		}
 	}
 }
-void graph::printDFS(){
+void graph::RecursiveDFS(int vertex){
+	recursiveVisit(vertex);
 	for(int i = 0; i < 26; i++){
 		if(DFSTree[i] == NULL){
 			DFSTree[i] = new Acity(i,cityname[i]);
 		}
 	}
-	cout<<"print DFS tree"<<endl;
-	for(int i = 1; i < 26; i++){
-		cout<<i<<cityname[i]<<"->";
-		AcityNode* checkedge;
-		if(DFSTree[i] != NULL){
-			checkedge = DFSTree[i]->firstNode;
-			while(checkedge != NULL){
-				cout<<checkedge->id<<checkedge->name<<"->";
-				checkedge = checkedge->next;
-			}				
-		}
-		cout<<endl;
-	}
+	RecursivePrintTree(vertex,0,DFSTree);
 }
 //邻接表的非递归DFS
 void graph::nonRecursiveDFS2(int vertex){
 	clearFormerDFS();
+	clearMark();
 	stack<int> S;
 	S.push(vertex);
 	int serach;
@@ -360,9 +343,11 @@ void graph::nonRecursiveDFS2(int vertex){
 			DFSTree[i] = new Acity(i,cityname[i]);
 		}
 	}
+	RecursivePrintTree(vertex,0,DFSTree); 
 }
 void graph::nonRecursiveDFS(int vertex){
 	clearFormerDFS();
+	clearMark();
 	stack<int> S;
 	S.push(vertex);
 	int serach;
@@ -404,4 +389,5 @@ void graph::nonRecursiveDFS(int vertex){
 			DFSTree[i]  = new Acity(i,cityname[i]);
 		}
 	}
+	RecursivePrintTree(vertex,0,DFSTree); 
 }

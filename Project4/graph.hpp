@@ -59,19 +59,17 @@ public:
 	graph();
 	~graph();
 	void setUpGraph();//生成两种储存方式的树，通过读取文件
-	void recursiveDFS(int vertex);
+	void clearFormerBFS();
+	void clearFormerDFS();
+	void clearMark();
 	void nonRecursiveDFS(int vertex);
 	void nonRecursiveDFS2(int vertex);
 	void BFS(int vertex);
 	void BFS2(int vertex);
-	void clearMark();
-	void clearFormerBFS();
-	void clearFormerDFS();
 	void addEdgeToTree(int a,int b, Acity* array[]);
 	void RecursivePrintTree(int pr, int offset,Acity* array[]);
-	Acity** getBFSTree(){return BFSTree;}
-	Acity** getDFSTree(){return DFSTree;}
-	void printDFS();
+	void RecursiveDFS(int vertex);
+	void recursiveVisit(int vertex);
 	//void addEdgeToMulLink(int a, int b, headnode* array[]);
 private:
 	Acity* city[SIZE];//第三题的邻接表
