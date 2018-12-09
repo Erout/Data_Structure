@@ -43,12 +43,14 @@ struct AcityNode
 struct Acity
 {
 	int id;
+	int mark;
 	string name;
 	AcityNode* firstNode;
 	Acity(int id_,string name_){
 		id = id_;
 		name = name_;
 		firstNode = NULL;
+		mark = 0;
 	}
 };
 
@@ -57,15 +59,24 @@ public:
 	graph();
 	~graph();
 	void setUpGraph();//生成两种储存方式的树，通过读取文件
-	void recursiveDFS();
-	void nonRecursiveDFS();
+	void recursiveDFS(int vertex);
+	void nonRecursiveDFS(int vertex);
+	void nonRecursiveDFS2(int vertex);
 	void BFS(int vertex);
+	void BFS2(int vertex);
 	void clearMark();
-	void addEdgeToMulLink(int a, int b, headnode* array[]);
+	void clearFormerBFS();
+	void clearFormerDFS();
+	void addEdgeToTree(int a,int b, Acity* array[]);
+	void RecursivePrintTree(int pr, int offset,Acity* array[]);
+	Acity** getBFSTree(){return BFSTree;}
+	Acity** getDFSTree(){return DFSTree;}
+	void printDFS();
+	//void addEdgeToMulLink(int a, int b, headnode* array[]);
 private:
 	Acity* city[SIZE];//第三题的邻接表
 	headnode* city_mul[SIZE];//第一题的邻接多重表
-	headnode* DFSTree[SIZE];//深度优先生成树
-	headnode* BFSTree[SIZE];//广度优先生成树
+	Acity* DFSTree[SIZE];//深度优先生成树
+	Acity* BFSTree[SIZE];//广度优先生成树
 	string cityname[SIZE];
 };
