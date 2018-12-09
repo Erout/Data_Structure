@@ -62,9 +62,7 @@ void graph::setUpGraph(){
 	while(!fin.eof()){
 		fin>>a;
 		fin>>b;
-		//cout<<a<<" "<<b<<endl;
-		//先建立邻接表
-		
+		//先建立邻接表		
 		AcityNode* tmpAdd;
 		if(city[a] == NULL){
 			city[a] = new Acity(a,cityname[a]);
@@ -205,7 +203,6 @@ void graph::BFS(int vertex){
 		serach = Q.front();
 		Q.pop();
 		visitOrder[order++] = serach->id;
-		//cout<<serach->id<<" "<<serach->name<<endl;
 		serach->mark = 1;
 		tempEdge = serach->firstedge;
 		while(tempEdge != NULL){
