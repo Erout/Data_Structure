@@ -193,6 +193,10 @@ void graph::setUpGraph(){
 void graph::BFS(int vertex){
 	clearFormerBFS();
 	clearMark();
+	int visitOrder[SIZE];
+	int order = 0;
+	int edgeSet[SIZE*SIZE][2];
+	int edgecount = 0;
 	queue<headnode*> Q;
 	Q.push(city_mul[vertex]);
 	headnode* serach;
@@ -200,6 +204,7 @@ void graph::BFS(int vertex){
 	while(!Q.empty()){
 		serach = Q.front();
 		Q.pop();
+		visitOrder[order++] = serach->id;
 		//cout<<serach->id<<" "<<serach->name<<endl;
 		serach->mark = 1;
 		tempEdge = serach->firstedge;
@@ -208,6 +213,9 @@ void graph::BFS(int vertex){
 				//若和正在遍历的点相连的节点未被遍历，那么则将它加到遍历队伍之中
 				if(city_mul[tempEdge->jvex]->mark != 1){
 					city_mul[tempEdge->jvex]->mark = 1;
+					edgeSet[edgecount][0] = tempEdge->ivex;
+					edgeSet[edgecount][1] = tempEdge->jvex;
+					edgecount++;
 					addEdgeToTree(tempEdge->ivex,tempEdge->jvex,BFSTree);
 					Q.push(city_mul[tempEdge->jvex]);
 				}
@@ -216,6 +224,9 @@ void graph::BFS(int vertex){
 			else if(tempEdge->jvex == serach->id){
 				if(city_mul[tempEdge->ivex]->mark != 1){
 					city_mul[tempEdge->ivex]->mark = 1;
+					edgeSet[edgecount][0] = tempEdge->jvex;
+					edgeSet[edgecount][1] = tempEdge->ivex;
+					edgecount++;
 					addEdgeToTree(tempEdge->jvex,tempEdge->ivex,BFSTree);
 					Q.push(city_mul[tempEdge->ivex]);
 				}
@@ -223,11 +234,25 @@ void graph::BFS(int vertex){
 			}
 		}
 	}
+	cout<<"                             ";
+	cout<<"以下是节点访问序列"<<endl;
 	for(int i = 0; i < 26; i++){
 		if(BFSTree[i] == NULL){
 			BFSTree[i] = new Acity(i,cityname[i]);
 		}
 	}
+	for(int i = 0; i < order; i++){
+		cout<<visitOrder[i]<<" ";
+	}
+	cout<<endl;
+	cout<<"                             ";
+	cout<<"以下是生成树的边集"<<endl;
+	for(int i = 0; i < edgecount; i++){
+		cout<<edgeSet[i][0]<<"->"<<edgeSet[i][1]<<" ,";
+	}
+	cout<<endl;
+	cout<<"                             ";
+	cout<<"以下是生成树"<<endl;
 	RecursivePrintTree(vertex,0,BFSTree);
 }
 //树边，为有向边，存出边邻接表
@@ -287,6 +312,8 @@ void graph::BFS2(int vertex){
 			BFSTree[i] = new Acity(i,cityname[i]);
 		}
 	}
+	cout<<"                             ";
+	cout<<"以下是生成树"<<endl;
 	RecursivePrintTree(vertex,0,BFSTree);
 }
 //邻接表DFS
@@ -343,16 +370,23 @@ void graph::nonRecursiveDFS2(int vertex){
 			DFSTree[i] = new Acity(i,cityname[i]);
 		}
 	}
+	cout<<"                             ";
+	cout<<"以下是生成树"<<endl;
 	RecursivePrintTree(vertex,0,DFSTree); 
 }
 void graph::nonRecursiveDFS(int vertex){
 	clearFormerDFS();
 	clearMark();
+	int visitOrder[SIZE];
+	int order = 0;
+	int edgeSet[SIZE*SIZE][2];
+	int edgecount = 0;
 	stack<int> S;
 	S.push(vertex);
 	int serach;
 	edge* e;
 	bool findnext = 0;
+	visitOrder[order++] = vertex;
 	while(!S.empty()){
 		serach = S.top();
 		city_mul[serach]->mark = 3;
@@ -361,9 +395,13 @@ void graph::nonRecursiveDFS(int vertex){
 		while(e != NULL && !findnext){
 			if(e->ivex == serach){
 				if(city_mul[e->jvex]->mark != 3){
+					edgeSet[edgecount][0] = serach;
+					edgeSet[edgecount][1] = e->jvex;
+					edgecount++;
 					addEdgeToTree(serach,e->jvex,DFSTree);
 					city_mul[e->jvex]->mark = 3;
 					S.push(e->jvex);
+					visitOrder[order++] = e->jvex;
 					findnext = 1;
 				}
 				else
@@ -371,9 +409,13 @@ void graph::nonRecursiveDFS(int vertex){
 			}
 			else if(e->jvex == serach){
 				if(city_mul[e->ivex]->mark != 3){
+					edgeSet[edgecount][0] = serach;
+					edgeSet[edgecount][1] = e->ivex;
+					edgecount++;
 					addEdgeToTree(serach,e->ivex,DFSTree);
 					city_mul[e->ivex]->mark = 3;
 					S.push(e->ivex);
+					visitOrder[order++] = e->ivex;
 					findnext = 1;
 				}
 				else
@@ -389,5 +431,19 @@ void graph::nonRecursiveDFS(int vertex){
 			DFSTree[i]  = new Acity(i,cityname[i]);
 		}
 	}
+	cout<<"                             ";
+	cout<<"以下是节点访问序列"<<endl;
+	for(int i = 0; i < order; i++){
+		cout<<visitOrder[i]<<" ";
+	}
+	cout<<endl;
+	cout<<"                             ";
+	cout<<"以下是生成树的边集"<<endl;
+	for(int i = 0; i < edgecount; i++){
+		cout<<edgeSet[i][0]<<"->"<<edgeSet[i][1]<<" , ";
+	}
+	cout<<endl;
+	cout<<"                             ";
+	cout<<"以下是生成树"<<endl;
 	RecursivePrintTree(vertex,0,DFSTree); 
 }
