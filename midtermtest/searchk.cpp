@@ -16,8 +16,9 @@ int main(){
 	char c;
 	int first = 1;
 	int onec = 1;
+	getchar();
 	for(int i = 0; i < n; i++){
-		s = "";
+		/*s = "";
 		onec = 1;
 		while(((cin>>temp)&&(!((temp[temp.size()-1] >='0')&&(temp[temp.size()-1] <= '9')))||(temp.size() != 1))){
 			if(onec){
@@ -28,8 +29,13 @@ int main(){
 				s += " ";
 				s += temp;
 			}
-		}
-		k = temp[temp.size()-1]-'0';
+		}*/
+		//k = temp[temp.size()-1]-'0';
+		//s = cin.get();
+		getline(cin,s);
+		k = s[s.size()-1]-'0';
+		s = s.substr(0,s.size()-2);
+		//cout<<s<<endl;
 		memset(times,0,sizeof(times));
 		first = 1;
 		for(int i = 0; i < s.size();i++){

@@ -2,49 +2,74 @@
 #include<vector>
 #define Size 1000000
 using namespace std;
+struct node
+{
+	int day;
+	long long leftSnow;
+	node* next;
+	node(long long all, int d){
+		day = d;
+		leftSnow = all;
+		next = NULL;
+	}
+};
 int main(){
 	int N;
-	//long long snow[Size];
-	vector<long long> snow;
+	node* snowHead = NULL;
 	long long temperature[Size];
 	cin>>N;
-	int count = 0;//formest snow left 
-	int melt = 0;
+	long long melt = 0;//answer
 	int first = 1;
 	long long sn;
+	node* temp;
 	for(int i = 0; i < N; i++){
-		//cin>>snow[i];
 		cin>>sn;
-		snow.push_back(sn);
+		if(snowHead == NULL){
+			snowHead = new node(sn,i);
+			temp = snowHead;
+		}
+		else{
+			temp->next = new node(sn,i);
+			temp = temp->next;
+		}
 	}
-	//snow.erase();
-	auto iter = snow.begin();
+	/*node* pr = snowHead;
+	
+	cout<<"left snow:";
+	while(pr != NULL){
+		cout<<pr->leftSnow<<' ';
+		pr = pr->next;
+	}
+	cout<<endl;
+	*/
+	temp = snowHead;
+	node* tempbefore = NULL;
+
 	for(int i = 0; i < N; i++){
 		cin>>temperature[i];
-		iter++;
 		melt = 0;
-		/*
-		for(int j = count; j <= i; j++){
-			if(snow[j] > 0){
-				if(snow[j] >= temperature[i])
-					melt += temperature[i];
-				else
-					melt += snow[j];
-				snow[j] -= temperature[i];
+		temp = snowHead;
+		while(temp != NULL){
+			if(temp->day > i)
+				break;
+			if(temp->leftSnow < temperature[i]){
+				melt += temp->leftSnow;
+				if(tempbefore == NULL){
+					snowHead = temp->next;
+					delete temp;
+					temp = snowHead;
+				}
+				else{
+					tempbefore->next = temp->next;
+					delete temp;
+					temp = tempbefore->next;
+				}
 			}
-		}*/
-		auto it = snow.begin();
-		while(it != iter){
-			if(*it > 0){
-				if(*it >= temperature[i])
-					melt += temperature[i];
-				else
-					melt += (*it);
-				(*it) -= temperature[i];
+			else{
+				melt += temperature[i];
+				temp->leftSnow -= temperature[i];
+				temp = temp->next;
 			}
-			it++;
-			if(*it < 0)
-				snow.erase(it);
 		}
 		if(first){
 			cout<<melt;
@@ -53,8 +78,6 @@ int main(){
 		else{
 			cout<<" "<<melt;
 		}
-		while(snow[count] <= 0)
-			count++;
 	}
 	cout<<endl;
 }

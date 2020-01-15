@@ -43,6 +43,3 @@ bool isScramble(String s1, String s2) {
         
         return result;
     }
-
-npuaxxett
-eupttxnax
